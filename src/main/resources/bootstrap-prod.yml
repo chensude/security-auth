@@ -1,0 +1,92 @@
+nacos:
+  group: ETOCRM-JAVA-DEV
+  namespace: etocrm-dkx
+spring:
+  cloud:
+    nacos:
+      server-addr: 10.100.20.243:8848
+      discovery:
+        group: ${nacos.group}
+        namespace: ${nacos.namespace}
+      config:
+        file-extension: yml
+        group: ${nacos.group}
+        namespace: ${nacos.namespace}
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    hikari:
+      auto-commit: true
+      connection-test-query: SELECT 1
+      connection-timeout: 30000
+      idle-timeout: 180000
+      max-lifetime: 1800000
+      maximum-pool-size: 10
+      minimum-idle: 5
+      pool-name: MyHikariCP
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://10.100.20.243:3306/auth?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: dev_root
+    password: D0tC3^v_LYw$24LY
+  jpa:
+    database: MySQL
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  redis:
+    database: 11
+    host: 10.100.20.243
+    port: 6379
+    password: 123456
+  security:
+    oauth2:
+      client:
+        registration:
+          custom:
+            client-id: ${oauth.base.client-id}
+            client-secret: ${oauth.base.secret}
+            authorization-grant-type: authorization_code
+            redirect-uri: https://www.google.com
+        provider:
+          custom:
+            authorization-uri: ${oauth.base.url}/auth/realms/${oauth.base.reaml}/protocol/openid-connect/auth
+            token-uri: ${oauth.base.url}/auth/realms/${oauth.base.reaml}/protocol/openid-connect/token
+            user-info-uri: ${oauth.base.url}/auth/realms/${oauth.base.reaml}/protocol/openid-connect/userinfo
+            user-name-attribute: preferred_username
+
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${JWK_SET_URI:${oauth.base.url}/auth/realms/${oauth.base.reaml}/protocol/openid-connect/certs}
+          issuer-uri: ${oauth.base.url}/auth/realms/${oauth.base.reaml}
+
+knife4j:
+  production: false
+
+#oauth:
+#  base:
+#    url: http://web-keycloak-sit.etocrm.net
+#    secret: 57d25fc6-9b43-4eca-8a0c-44a31facf8bb
+#    client-id: oauth-center
+#    reaml: uam
+oauth:
+  base:
+    url: http://web-keycloak.woaap.com
+    secret: c7e5984d-3ad1-4f25-8dd6-f7e12adead20
+    client-id: oauth-center
+    reaml: uam
+
+keycloak:
+  auth-server-url: ${oauth.base.url}/auth
+  realm: ${oauth.base.reaml}
+  #public-client: true
+  resource: ${oauth.base.client-id}
+  principal-attribute: csd
+  credentials:
+    secret: ${oauth.base.secret}
+auth2:
+  keycloak:
+    client-id: ${oauth.base.client-id}
+    client-secret: ${oauth.base.secret}
+    token-uri: ${oauth.base.url}/auth/realms/${oauth.base.reaml}/protocol/openid-connect/token
+    user-uri: ${oauth.base.url}/auth/admin/realms/${oauth.base.reaml}/users
