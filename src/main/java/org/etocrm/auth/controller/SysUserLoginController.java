@@ -28,15 +28,14 @@ public class SysUserLoginController {
 
     private static final int TOKEN_EXPIRATION_BUFFER_SECONDS = 15;
 
+    @ApiOperation("中台用户登录")
+    @PostMapping("/auth/form")
+    public TokenValue login(@RequestBody LoginUser user) {
+//        TokenValue login = authenticationService.login(user.getUserName(), user.getPassword());
+//        login.setAccessToken("Bearer "+login.getAccessToken());
+        return null;
+    }
 
-
-//    @ApiOperation("中台用户登录")
-//    @PostMapping("/login")
-//    public TokenValue login(@RequestBody LoginUser user) {
-//      //  TokenValue login = authenticationService.login(user.getUserName(), user.getPassword());
-//     //   login.setAccessToken("Bearer "+login.getAccessToken());
-//        return null;
-//    }
 
     @GetMapping("/logout")
     public String login(HttpServletRequest request) throws ServletException {

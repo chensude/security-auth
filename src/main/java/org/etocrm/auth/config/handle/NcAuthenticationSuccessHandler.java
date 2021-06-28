@@ -80,7 +80,7 @@ public class NcAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
         TokenValue tokenValue = new TokenValue();
         BeanUtils.copyProperties(token,tokenValue);
         tokenValue.setAccessToken("Bearer "+token.getValue());
-        response.getWriter().write((objectMapper.writeValueAsString(ResponseVO.success(tokenValue))));
+        response.getWriter().write((objectMapper.writeValueAsString(tokenValue)));
     }
 
 }
